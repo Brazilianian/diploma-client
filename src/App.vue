@@ -20,13 +20,13 @@ import { RouterLink, RouterView } from 'vue-router'
             </form>
             <div class="d-flex">
               <button class="btn btn-outline-light me-2" type="button">
-                <router-link class="nav-link" to="/login">Login</router-link>
+                <router-link class="nav-link" to="/login">Авторизуватися</router-link>
               </button>
               <button class="btn btn-outline-light me-2" type="button">
-                <router-link class="nav-link" to="/registration">Registration</router-link>
+                <router-link class="nav-link" to="/registration">Зареєструватися</router-link>
               </button>
               <button class="btn btn-outline-light" type="button">
-                <router-link class="nav-link" to="/profile">Profile</router-link>
+                <router-link class="nav-link" to="/profile">Профіль</router-link>
               </button>
             </div>
           </div>

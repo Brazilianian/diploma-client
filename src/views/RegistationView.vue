@@ -1,5 +1,52 @@
-<script setup>
+<script>
 
+import { createUser } from '@/service/auth_service.js'
+
+export default {
+  name: 'RegistrationView',
+  data() {
+    return {
+      user: {
+        name: null,
+        surname: null,
+        email: null,
+        password: null,
+        password2: null
+      }
+    }
+  },
+  methods: {
+    createUser() {
+      if (this.user.password !== this.user.password2) {
+        return this.$notify({
+          title: 'Реєстрація',
+          text: 'Паролі мають співпадати',
+          type: 'warn'
+        })
+      }
+
+      createUser(this.user)
+        .then(res => {
+          if (res.status === 201) {
+            this.$notify({
+              type: 'info',
+              title: 'Реєстрація',
+              text: 'Користувач успішно зареєстрований'
+            })
+
+            this.$router.push('/login')
+            return
+          }
+
+          this.$notify({
+            type: 'error',
+            title: 'Реєстрація',
+            text: `Помилка реєстрація ${res.data.message}`
+          })
+        })
+    }
+  }
+}
 </script>
 
 <template>
@@ -10,26 +57,43 @@
         <form>
           <div class="mb-3">
             <label for="exampleInputName" class="form-label">Ім'я</label>
-            <input type="text" class="form-control" id="exampleInputName" placeholder="John" required>
+            <input v-model="user.name" type="text" class="form-control" id="exampleInputName" placeholder="John"
+                   required>
           </div>
           <div class="mb-3">
             <label for="exampleInputName" class="form-label">Прізвище</label>
-            <input type="text" class="form-control" id="exampleInputName" placeholder="Doe" required>
+            <input v-model="user.surname" type="text" class="form-control" id="exampleInputName" placeholder="Doe"
+                   required>
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Пошта</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="example@gmail.com" required>
-            <div id="emailHelp" class="form-text text-light">Ми ніколи не передамо вашу електрону скриньку стороннім особам</div>
+            <input v-model="user.email" type="email" class="form-control" id="exampleInputEmail1"
+                   aria-describedby="emailHelp"
+                   placeholder="example@gmail.com" required>
+            <div id="emailHelp" class="form-text text-light">Ми ніколи не передамо вашу електрону скриньку стороннім
+              особам
+            </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="**********" required>
+            <input v-model="user.password" type="password" class="form-control" id="exampleInputPassword1"
+                   placeholder="**********" required>
           </div>
           <div class="mb-3">
             <label for="exampleInputConfirmPassword" class="form-label">Підтвердіть пароль</label>
-            <input type="password" class="form-control" id="exampleInputConfirmPassword" placeholder="**********" required>
+            <input v-model="user.password2" type="password" class="form-control" id="exampleInputConfirmPassword"
+                   placeholder="**********"
+                   required>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Зареєструватися</button>
+          <div class="text-center mb-3">
+            Вже маєте акаунт?
+            <router-link to="/login">Увійти</router-link>
+          </div>
+          <button
+            type="submit" class="btn btn-primary w-100"
+            @click="createUser()"
+          >Зареєструватися
+          </button>
         </form>
       </div>
     </div>

@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { Notifications } from '@kyvg/vue3-notification'
 </script>
 
 <template>
@@ -36,6 +37,8 @@ import { RouterLink, RouterView } from 'vue-router'
   </header>
 
   <RouterView />
+
+  <notifications />
 </template>
 
 <style scoped>

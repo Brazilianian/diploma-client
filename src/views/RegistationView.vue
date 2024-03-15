@@ -12,12 +12,24 @@ export default {
         email: null,
         password: null,
         password2: null
+      },
+
+      validationErrors: {
+        email: null,
+        firstName: null,
+        lastName: null,
+        password: null
       }
     }
   },
   methods: {
     createUser() {
+
+      this.validationErrors = {}
+
       if (this.user.password !== this.user.password2) {
+        this.validationErrors.password = 'Паролі мають співпадати'
+
         return this.$notify({
           title: 'Реєстрація',
           text: 'Паролі мають співпадати',
@@ -44,6 +56,17 @@ export default {
             text: `Помилка реєстрація ${res.data.message}`
           })
         })
+        .catch((err) => {
+          this.$notify({
+            type: 'error',
+            title: 'Реєстрація',
+            text: `Помилка реєстрації. ${err}`
+          })
+
+          if (err.response.status === 422) {
+            this.validationErrors = err.response.data.errors
+          }
+        })
     }
   }
 }
@@ -59,11 +82,17 @@ export default {
             <label for="exampleInputName" class="form-label">Ім'я</label>
             <input v-model="user.name" type="text" class="form-control" id="exampleInputName" placeholder="John"
                    required>
+            <div class="text-danger">
+              {{ validationErrors?.firstName }}
+            </div>
           </div>
           <div class="mb-3">
-            <label for="exampleInputName" class="form-label">Прізвище</label>
-            <input v-model="user.surname" type="text" class="form-control" id="exampleInputName" placeholder="Doe"
+            <label for="exampleInputSurName" class="form-label">Прізвище</label>
+            <input v-model="user.surname" type="text" class="form-control" id="exampleInputSurName" placeholder="Doe"
                    required>
+            <div class="text-danger">
+              {{ validationErrors?.lastName }}
+            </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Пошта</label>
@@ -73,24 +102,32 @@ export default {
             <div id="emailHelp" class="form-text text-light">Ми ніколи не передамо вашу електрону скриньку стороннім
               особам
             </div>
+            <div class="text-danger">
+              {{ validationErrors?.email }}
+            </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Пароль</label>
             <input v-model="user.password" type="password" class="form-control" id="exampleInputPassword1"
                    placeholder="**********" required>
-          </div>
+            <div class="text-danger">
+              {{ validationErrors?.password }}
+            </div></div>
           <div class="mb-3">
             <label for="exampleInputConfirmPassword" class="form-label">Підтвердіть пароль</label>
             <input v-model="user.password2" type="password" class="form-control" id="exampleInputConfirmPassword"
                    placeholder="**********"
                    required>
+            <div class="text-danger">
+              {{ validationErrors?.password }}
+            </div>
           </div>
           <div class="text-center mb-3">
             Вже маєте акаунт?
             <router-link to="/login">Увійти</router-link>
           </div>
           <button
-            type="submit" class="btn btn-primary w-100"
+            type="button" class="btn btn-primary w-100"
             @click="createUser()"
           >Зареєструватися
           </button>

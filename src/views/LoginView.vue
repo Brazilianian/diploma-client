@@ -1,5 +1,49 @@
-<script setup>
+<script>
+import { loginUser } from '@/service/auth_service.js'
 
+export default {
+  data() {
+    return {
+      user: {
+        email: null,
+        password: null
+      },
+      userValidation: {
+        email: null,
+        password: null
+
+      }
+    }
+  },
+  methods: {
+    login() {
+
+      this.userValidation = {}
+
+      loginUser(this.user)
+        .then(res => {
+
+        })
+        .catch(err => {
+          if (err.response.status === 403) {
+            this.userValidation.password = 'Невірний Пароль'
+
+            return this.$notify({
+              type: 'error',
+              title: 'Авторизація',
+              text: `Помилка аутентифікації. Невірний Email або пароль`
+            })
+          }
+
+          this.$notify({
+            type: 'error',
+            title: 'Авторизація',
+            text: `Помилка аутентифікації. ${err.response.data.message}`
+          })
+        })
+    }
+  }
+}
 </script>
 
 <template>
@@ -10,21 +54,35 @@
         <form>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Пошта</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="example@gmail.com">
-            <div id="emailHelp" class="form-text text-light">Ми ніколи не передамо вашу електрону скриньку стороннім особам</div>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                   placeholder="example@gmail.com"
+                   v-model="user.email"
+            >
+            <div id="emailHelp" class="form-text text-light">Ми ніколи не передамо вашу електрону скриньку стороннім
+              особам
+            </div>
+            <div class="text-danger">
+              {{ userValidation.email }}
+            </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="**********">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="**********"
+                   v-model="user.password"
+            >
+            <div class="text-danger">
+              {{ userValidation.password }}
+            </div>
           </div>
           <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Запам'ятати мене</label>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Увійти</button>
+          <button type="button" class="btn btn-primary w-100" @click="login()">Увійти</button>
         </form>
         <div class="text-center mt-3">
-          Ще не зареєстровані? <router-link to="/registration">Зареєструватися</router-link>
+          Ще не зареєстровані?
+          <router-link to="/registration">Зареєструватися</router-link>
         </div>
       </div>
     </div>

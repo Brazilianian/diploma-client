@@ -8,3 +8,10 @@ export async function createUser(user) {
     password: user.password
   })
 }
+
+export async function loginUser(user) {
+  return await axios.post('/auth/authenticate', {
+    email: user.email,
+    password: user.password
+  })
+}

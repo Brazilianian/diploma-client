@@ -52,7 +52,7 @@ export default {
 
           this.$notify({
             type: 'error',
-            title: 'Реєстрація',
+            title: 'Реєстраціsя',
             text: `Помилка реєстрація ${res.data.message}`
           })
         })
@@ -60,7 +60,7 @@ export default {
           this.$notify({
             type: 'error',
             title: 'Реєстрація',
-            text: `Помилка реєстрації. ${err}`
+            text: `Помилка реєстрації. ${err.response.data.message}`
           })
 
           if (err.response.status === 422) {

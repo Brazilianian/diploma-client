@@ -1,5 +1,5 @@
 <script>
-import { loginUser } from '@/service/auth_service.js'
+import { getTokensFromResponse, loginUser } from '@/service/auth_service.js'
 
 export default {
   data() {
@@ -22,7 +22,10 @@ export default {
 
       loginUser(this.user)
         .then(res => {
+          const tokens = getTokensFromResponse(res)
+          if (tokens) {
 
+          }
         })
         .catch(err => {
           if (err.response.status === 403) {

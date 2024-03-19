@@ -15,3 +15,8 @@ export async function loginUser(user) {
     password: user.password
   })
 }
+
+export function getTokensFromResponse(response) {
+  return response.data
+
+}

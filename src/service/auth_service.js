@@ -17,6 +17,9 @@ export async function loginUser(user) {
 }
 
 export function getTokensFromResponse(response) {
-  return response.data
+  return response.data.tokens
+}
 
+export function getUserFromResponse(response) {
+  return response.data.user
 }

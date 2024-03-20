@@ -1,5 +1,6 @@
 <script>
-import { getTokensFromResponse, loginUser } from '@/service/auth_service.js'
+import { getTokensFromResponse, getUserFromResponse, loginUser } from '@/service/auth_service.js'
+import { useStore } from 'vuex'
 
 export default {
   data() {
@@ -22,12 +23,21 @@ export default {
 
       loginUser(this.user)
         .then(res => {
-          const tokens = getTokensFromResponse(res)
-          if (tokens) {
 
+          console.log(res)
+
+          const tokens = getTokensFromResponse(res)
+          const user = getUserFromResponse(res)
+          if (!tokens) {
+            this.$store.commit('loginFailure')
+            return
           }
+
+          this.$store.commit('loginSuccess', { tokens, user })
         })
         .catch(err => {
+          this.$store.commit('loginFailure')
+
           if (err.response.status === 403) {
             this.userValidation.password = 'Невірний Пароль'
 

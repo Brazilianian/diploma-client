@@ -16,6 +16,10 @@ export async function loginUser(user) {
   })
 }
 
+export async function refreshToken() {
+  return await axios.post('/auth/refresh-token')
+}
+
 export function getTokensFromResponse(response) {
   return response.data.tokens
 }

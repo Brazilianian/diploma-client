@@ -19,7 +19,7 @@ export const auth = {
     loginFailure(state) {
       state.isAuth = false
       state.user = null
-      state.tokens = null
+      state.tokens = {}
     },
     loginSuccess(state, { tokens, user }) {
       state.isAuth = true
@@ -29,7 +29,7 @@ export const auth = {
     logout(state) {
       state.isAuth = false
       state.user = null
-      state.tokens = null
+      state.tokens = {}
     },
   },
   actions: {},

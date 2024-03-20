@@ -26,7 +26,7 @@ export default {
           const tokens = getTokensFromResponse(res)
           const user = getUserFromResponse(res)
           if (!tokens) {
-            this.$store.commit('loginFailure')
+            this.$store.commit('auth/loginFailure')
             return
           }
 
@@ -34,12 +34,12 @@ export default {
           saveRefreshToken(tokens.refreshToken)
           saveUser(user)
 
-          this.$store.commit('loginSuccess', { tokens, user })
+          this.$store.commit('auth/loginSuccess', { tokens, user })
 
           this.$router.push('/')
         })
         .catch(err => {
-          this.$store.commit('loginFailure')
+          this.$store.commit('auth/loginFailure')
 
           if (err.response.status === 403) {
             this.userValidation.password = 'Невірний Пароль'

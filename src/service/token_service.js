@@ -16,3 +16,11 @@ export function getRefreshToken() {
 export function saveRefreshToken(refreshToken) {
   localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(refreshToken))
 }
+
+export function removeAccessTokenFromLocalStorage() {
+  localStorage.removeItem(ACCESS_TOKEN_KEY)
+}
+
+export function removeRefreshTokenFromLocalStorage() {
+  localStorage.removeItem(REFRESH_TOKEN_KEY)
+}

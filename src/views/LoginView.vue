@@ -1,6 +1,7 @@
 <script>
 import { getTokensFromResponse, getUserFromResponse, loginUser } from '@/service/auth_service.js'
-import { useStore } from 'vuex'
+import { saveAccessToken, saveRefreshToken } from '@/service/token_service.js'
+import { saveUser } from '@/service/user_service.js'
 
 export default {
   data() {
@@ -12,19 +13,15 @@ export default {
       userValidation: {
         email: null,
         password: null
-
       }
     }
   },
   methods: {
     login() {
-
       this.userValidation = {}
 
       loginUser(this.user)
         .then(res => {
-
-          console.log(res)
 
           const tokens = getTokensFromResponse(res)
           const user = getUserFromResponse(res)
@@ -33,7 +30,13 @@ export default {
             return
           }
 
+          saveAccessToken(tokens.accessToken)
+          saveRefreshToken(tokens.refreshToken)
+          saveUser(user)
+
           this.$store.commit('loginSuccess', { tokens, user })
+
+          this.$router.push('/')
         })
         .catch(err => {
           this.$store.commit('loginFailure')

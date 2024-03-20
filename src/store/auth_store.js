@@ -10,6 +10,7 @@ export const auth = {
   state: {
     isAuth: !!user,
     user: user,
+    isAdmin: user?.role === 'ADMIN',
     tokens: {
       accessToken: accessToken,
       refreshToken: refreshToken

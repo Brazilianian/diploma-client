@@ -21,6 +21,7 @@ import { removeUserFromLocalStorage } from '@/service/user_service.js'
 </script>
 
 <template>
+  <!-- TODO: complete profile page -->
   <div class="container mt-5">
     <div class="row">
       <div class="col">

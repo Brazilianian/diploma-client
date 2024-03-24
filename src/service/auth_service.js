@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getRefreshToken } from '@/service/token_service.js'
 
 export async function createUser(user) {
-  return await axios.post('/auth/register', {
+  return axios.post('/auth/register', {
     firstName: user.name,
     lastName: user.surname,
     email: user.email,
@@ -11,7 +11,7 @@ export async function createUser(user) {
 }
 
 export async function loginUser(user) {
-  return await axios.post('/auth/authenticate', {
+  return axios.post('/auth/authenticate', {
     email: user.email,
     password: user.password
   })
@@ -20,7 +20,7 @@ export async function loginUser(user) {
 export async function refreshToken() {
   const refreshToken = getRefreshToken()
 
-  return await axios.post('/auth/refresh-token', {}, {
+  return axios.post('/auth/refresh-token', {}, {
     headers: {
       Authorization: `Bearer ${refreshToken}`
     },

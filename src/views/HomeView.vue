@@ -39,11 +39,15 @@ export default {
 
     addUnit() {
       if (!this.unit.name) {
+        const message = 'Введіть назву підрозділу'
+
         this.$notify({
           type: 'warn',
           title: 'Створення підрозділу',
-          text: `Введіть назву підрозділу`
+          text: message
         })
+
+        this.unitValidation.name = message
 
         return
       }
@@ -79,6 +83,16 @@ export default {
           })
         })
     },
+
+    imageChange(event) {
+      const unitImg = document.getElementById('unitImage')
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(event.target.files[0])
+      fileReader.onload = (event) => {
+        unitImg.src = event.target.result
+        this.unit.image = event.target.result
+      }
+    }
   },
 
   computed: {
@@ -102,15 +116,14 @@ export default {
           <div v-for="unit in units"
                :key="unit.uuid"
                class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+            <img :src="unit.image" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{ unit.name }}</h5>
               <p class="card-text">{{ unit.description }}</p>
 
-
-                <router-link :to="`/units/${unit.uuid}`">
-                  <button class="btn btn-primary">Переглянути</button>
-                </router-link>
+              <router-link :to="`/units/${unit.uuid}`">
+                <button class="btn btn-primary">Переглянути</button>
+              </router-link>
 
             </div>
           </div>
@@ -118,6 +131,8 @@ export default {
           <div v-if="isAuth" class="card" style="width: 18rem;">
             <img src='/img/add.png' class="card-img-top" alt="add">
             <div class="card-body text-center">
+
+              <!-- Modal activate button -->
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Добавити підрозділ
               </button>
@@ -129,7 +144,8 @@ export default {
   </main>
 
   <!--Modal-->
-  <div v-if="isAuth" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  <div v-if="isAuth" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+       tabindex="-1"
        aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -140,11 +156,21 @@ export default {
         <div class="modal-body text-dark">
           <div class="mb-3">
             <label for="name">Назва Підрозділу (або номер)</label>
-            <input v-model="unit.name" type="text" class="form-control" placeholder="ВІТІ ім. Героїв Крут">
+            <input v-model="unit.name" type="text" class="form-control"
+                   :class="unitValidation.name ? 'is-invalid' : ''" placeholder="ВІТІ ім. Героїв Крут">
             <div class="text-danger">
               {{ unitValidation.name }}
             </div>
           </div>
+
+          <div class="mb-3">
+            <img src="" class="card-img-top" alt="" id="unitImage">
+            <label for="image">Виберіть зображення</label>
+            <input @change="imageChange" type="file" name="image" id="unitImagePicker"
+                   class="form-control"
+            >
+          </div>
+
           <div class="mb-3">
             <GoogleMap
               @markerPositionChange="(position) => {

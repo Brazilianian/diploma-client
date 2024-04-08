@@ -1,9 +1,10 @@
 <script>
 import { createUnit, getAllUnits } from '@/service/unit_service.js'
-import GoogleMap from '@/components/GoogleMap.vue'
+import GoogleMap from '@/components/GoogleMapUnitEdit.vue'
+import UnitCard from '@/components/UnitCard.vue'
 
 export default {
-  components: { GoogleMap },
+  components: { UnitCard, GoogleMap },
   data() {
     return {
       units: [],
@@ -62,6 +63,8 @@ export default {
 
           this.unitValidation = {}
           this.unit = {}
+
+          this.fillUnits()
         })
         .catch(err => {
           if (err.response?.status === 422) {
@@ -95,8 +98,7 @@ export default {
     }
   },
 
-  computed: {
-  },
+  computed: {},
 
   mounted() {
     this.fillUnits()
@@ -108,23 +110,12 @@ export default {
   <main>
     <div class="container">
       <div class="row">
-        <div class="col">
+        <div class="col mt-3" v-for="(unit, index) in units"
+             :key="index">
+          <UnitCard :unit="unit"></UnitCard>
+        </div>
 
-          <div v-for="unit in units"
-               :key="unit.uuid"
-               class="card" style="width: 18rem;">
-            <img :src="unit.image.content" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{ unit.name }}</h5>
-              <p class="card-text">{{ unit.description }}</p>
-
-              <router-link :to="`/units/${unit.uuid}`">
-                <button class="btn btn-primary">Переглянути</button>
-              </router-link>
-
-            </div>
-          </div>
-
+        <div class="col mt-3">
           <div class="card" style="width: 18rem;">
             <img src='/img/add.png' class="card-img-top" alt="add">
             <div class="card-body text-center">
@@ -161,11 +152,27 @@ export default {
           </div>
 
           <div class="mb-3">
-            <img src="" class="card-img-top" alt="" id="unitImage">
+            <img :src="unit.image?.content" class="card-img-top" alt="" id="unitImage">
             <label for="image">Виберіть зображення</label>
             <input @change="imageChange" type="file" name="image" id="unitImagePicker"
-                   class="form-control"
+                   class="form-control">
+            <div class="text-danger">
+              {{ unitValidation.image }}
+              {{ unitValidation['image.content'] }}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description">Введіть опис частини</label>
+            <textarea
+              v-model="this.unit.description"
+              name="description" id="description" cols="30" rows="10" class="form-control"
+              placeholder="Інститут зв'язку. Київ"
             >
+            </textarea>
+            <div class="text-danger">
+              {{ unitValidation.description }}
+            </div>
           </div>
 
           <div class="mb-3">

@@ -5,31 +5,36 @@ import LoginView from '@/views/LoginView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import { auth } from '@/store/auth_store.js'
 import AdminView from '@/views/AdminView.vue'
+import UnitView from '@/views/UnitView.vue'
 
-const MAIN_NAME = 'main'
-const LOGIN_NAME = 'login'
-const REGISTRATION_NAME = 'registration'
-const ADMIN = 'ADMIN'
+const names = Object.freeze({
+  MAIN: 'main',
+  LOGIN: 'login',
+  REGISTRATION: 'registration',
+  ADMIN: 'admin',
+  UNIT: 'unit'
+})
 
-const WHITE_NAME_LIST = [LOGIN_NAME, REGISTRATION_NAME]
-const ADMIN_NAME_LIST = [ADMIN]
+
+const WHITE_NAME_LIST = [names.LOGIN, names.REGISTRATION]
+const ADMIN_NAME_LIST = [names.ADMIN]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: MAIN_NAME,
+      name: names.MAIN,
       component: HomeView
     },
     {
       path: '/login',
-      name: LOGIN_NAME,
+      name: names.LOGIN,
       component: LoginView
     },
     {
       path: '/registration',
-      name: REGISTRATION_NAME,
+      name: names.REGISTRATION,
       component: RegistrationView
     },
     {
@@ -39,8 +44,13 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: ADMIN,
+      name: names.ADMIN,
       component: AdminView
+    },
+    {
+      path: '/units/:id',
+      name: names.UNIT,
+      component: UnitView
     }
   ]
 })
@@ -60,7 +70,7 @@ router.beforeEach((to, from, next) => {
       return next()
     }
 
-    return next({name: MAIN_NAME})
+    return next({name: names.MAIN})
   }
 
   if (isAuth) {
@@ -69,7 +79,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // Forbid
-  next({ name: LOGIN_NAME })
+  next({ name: names.LOGIN })
 })
 
 export default router

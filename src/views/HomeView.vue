@@ -96,9 +96,6 @@ export default {
   },
 
   computed: {
-    isAuth() {
-      return this.$store.state.auth.isAuth
-    }
   },
 
   mounted() {
@@ -116,7 +113,7 @@ export default {
           <div v-for="unit in units"
                :key="unit.uuid"
                class="card" style="width: 18rem;">
-            <img :src="unit.image" class="card-img-top" alt="...">
+            <img :src="unit.image.content" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{ unit.name }}</h5>
               <p class="card-text">{{ unit.description }}</p>
@@ -128,7 +125,7 @@ export default {
             </div>
           </div>
 
-          <div v-if="isAuth" class="card" style="width: 18rem;">
+          <div class="card" style="width: 18rem;">
             <img src='/img/add.png' class="card-img-top" alt="add">
             <div class="card-body text-center">
 
@@ -144,7 +141,7 @@ export default {
   </main>
 
   <!--Modal-->
-  <div v-if="isAuth" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
        tabindex="-1"
        aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

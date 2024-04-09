@@ -93,7 +93,30 @@ export default {
         unitImg.src = event.target.result
         this.unit.image = event.target.result
       }
-    }
+    },
+
+    prettifyDistance(distance) {
+      const kilometers = Math.floor(distance / 1000)
+      const meters = distance % 1000
+      return (kilometers ? kilometers + ' км ' : '') + meters + ' м'
+    },
+
+    prettifyDuration(duration) {
+      const hours = Math.floor(duration / 3600)
+      const minutes = Math.floor((duration % 3600) / 60)
+      const remainingSeconds = duration % 60
+
+      let result = ''
+      if (hours > 0) {
+        result += hours + ' год. '
+      }
+      if (minutes > 0) {
+        result += minutes + ' хв. '
+      }
+      result += remainingSeconds + ' с.'
+
+      return result.trim()
+    },
   },
 
   mounted() {
@@ -103,7 +126,7 @@ export default {
   computed: {
     hasManagePermission() {
       return this.$store.state.auth.isAdmin || this.unit.users.some(u => u.id === this.$store.state.auth.user.id)
-    }
+    },
   }
 }
 </script>
@@ -141,11 +164,15 @@ export default {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="order in orders" :key="order.id">
+        <tr v-for="(order, index) in orders" :key="order.id">
+          <td>{{ index++ }}</td>
           <td>{{ order.name }}</td>
-          <td>{{ order.orderDetails.distance }}</td>
-          <td>{{ order.orderDetails.dateFrom }}</td>
-          <td>{{ order.orderDetails.dateTo }}</td>
+          <td>{{ this.prettifyDistance(order.orderDetailsDto.distance) }}</td>
+          <td>{{ order.orderDetailsDto.dateTimeFrom }}</td>
+          <td>{{ order.orderDetailsDto.dateTimeTo }}</td>
+<!--          <td>{{ order.orderDetails.distance }}</td>-->
+<!--          <td>{{ order.orderDetails.dateFrom }}</td>-->
+<!--          <td>{{ order.orderDetails.dateTo }}</td>-->
         </tr>
         </tbody>
       </table>

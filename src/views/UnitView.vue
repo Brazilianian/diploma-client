@@ -2,16 +2,17 @@
 
 import { deleteUnitById, getUnitById } from '@/service/unit_service.js'
 import GoogleMapUnitView from '@/components/GoogleMapUnitView.vue'
-import GoogleMap from '@/components/GoogleMapUnitEdit.vue'
+import { getOrderById } from '@/service/order_service.js'
 
 export default {
-  components: { GoogleMap, GoogleMapUnitView },
+  components: { GoogleMapUnitView },
   data() {
     return {
       unit: {},
       isLoaded: false,
       point: {},
-      unitValidation: {}
+      unitValidation: {},
+      orders: []
     }
   },
 
@@ -45,6 +46,8 @@ export default {
           this.unit = res.data
           this.point = { lat: this.unit.location.latitude, lng: this.unit.location.longitude }
           this.isLoaded = true
+
+          this.getOrders()
         })
         .catch(err => {
           this.$notify({
@@ -55,6 +58,22 @@ export default {
 
           this.$router.push('/')
         })
+    },
+
+    getOrders() {
+      for (const orderId of this.unit.ordersId) {
+        getOrderById(orderId)
+          .then((res) => {
+            this.orders.push(res.data)
+          })
+          .catch(err => {
+            this.$notify({
+              type: 'error',
+              title: 'Отримання замовлення',
+              text: `Помилка отримання підрозділу ${orderId}\n${err.response?.data.message}`
+            })
+          })
+      }
     },
 
     editUnit() {
@@ -77,8 +96,8 @@ export default {
     }
   },
 
-  async mounted() {
-    await this.getCurrentUnit()
+  mounted() {
+    this.getCurrentUnit()
   },
 
   computed: {
@@ -109,6 +128,35 @@ export default {
         <GoogleMapUnitView :point="this.point" class="mt-3"></GoogleMapUnitView>
       </div>
     </div>
+
+    <div class="row border mt-3 p-3 rounded">
+      <table v-if="orders.length > 0" class="table table-dark table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Назва</th>
+          <th scope="col">Дистанція</th>
+          <th scope="col">Від</th>
+          <th scope="col">По</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="order in orders" :key="order.id">
+          <td>{{ order.name }}</td>
+          <td>{{ order.orderDetails.distance }}</td>
+          <td>{{ order.orderDetails.dateFrom }}</td>
+          <td>{{ order.orderDetails.dateTo }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <h3 class="text-center" v-else>
+        Поки що жодних замовлень в даній частині!
+      </h3>
+      <router-link :to="`/order-create?unitId=${unit.uuid}`">
+        <button class="btn btn-secondary w-100">Створити замовлення</button>
+      </router-link>
+    </div>
+
     <div class="row mt-3 pb-3" v-if="hasManagePermission">
       <div class="col">
         <div class="text-center">

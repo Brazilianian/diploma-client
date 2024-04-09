@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import Notifications from '@kyvg/vue3-notification'
 
-import { GoogleMap, Marker } from 'vue3-google-map'
+import { GoogleMap, Marker,  } from 'vue3-google-map'
 
 const app = createApp(App)
 

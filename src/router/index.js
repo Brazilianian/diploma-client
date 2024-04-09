@@ -6,13 +6,15 @@ import ProfileView from '@/views/ProfileView.vue'
 import { auth } from '@/store/auth_store.js'
 import AdminView from '@/views/AdminView.vue'
 import UnitView from '@/views/UnitView.vue'
+import OrderCreateView from '@/views/OrderCreateView.vue'
 
 const names = Object.freeze({
   MAIN: 'main',
   LOGIN: 'login',
   REGISTRATION: 'registration',
   ADMIN: 'admin',
-  UNIT: 'unit'
+  UNIT: 'unit',
+  ORDER_CREATE: 'orderCreate',
 })
 
 
@@ -51,6 +53,11 @@ const router = createRouter({
       path: '/units/:id',
       name: names.UNIT,
       component: UnitView
+    },
+    {
+      path: '/order-create',
+      name: names.ORDER_CREATE,
+      component: OrderCreateView
     }
   ]
 })

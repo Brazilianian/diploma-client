@@ -117,6 +117,10 @@ export default {
 
       return result.trim()
     },
+
+    goToOrder(id) {
+      this.$router.push(`/orders/${id}`)
+    }
   },
 
   mounted() {
@@ -126,7 +130,7 @@ export default {
   computed: {
     hasManagePermission() {
       return this.$store.state.auth.isAdmin || this.unit.users.some(u => u.id === this.$store.state.auth.user.id)
-    },
+    }
   }
 }
 </script>
@@ -153,7 +157,7 @@ export default {
     </div>
 
     <div class="row border mt-3 p-3 rounded">
-      <table v-if="orders.length > 0" class="table table-dark table-striped">
+      <table v-if="orders.length > 0" class="table table-dark table-striped table-hover">
         <thead>
         <tr>
           <th scope="col">#</th>
@@ -164,15 +168,12 @@ export default {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(order, index) in orders" :key="order.id">
+        <tr v-for="(order, index) in orders" :key="order.id" @click="goToOrder(order.id)">
           <td>{{ index++ }}</td>
           <td>{{ order.name }}</td>
           <td>{{ this.prettifyDistance(order.orderDetailsDto.distance) }}</td>
           <td>{{ order.orderDetailsDto.dateTimeFrom }}</td>
           <td>{{ order.orderDetailsDto.dateTimeTo }}</td>
-<!--          <td>{{ order.orderDetails.distance }}</td>-->
-<!--          <td>{{ order.orderDetails.dateFrom }}</td>-->
-<!--          <td>{{ order.orderDetails.dateTo }}</td>-->
         </tr>
         </tbody>
       </table>
@@ -205,5 +206,4 @@ export default {
 </template>
 
 <style scoped>
-
 </style>

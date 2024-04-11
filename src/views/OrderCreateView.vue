@@ -67,7 +67,6 @@ export default {
       new google.maps.Marker({
         position: { lat: this.unit.location.latitude, lng: this.unit.location.longitude },
         map: this.map,
-        label: this.unit.name
       })
 
       window.directionsService = new google.maps.DirectionsService()
@@ -149,7 +148,6 @@ export default {
           const marker = new google.maps.Marker({
             position: place.geometry.location,
             map: this.map,
-            label: counter.toString()
           })
 
           window.markers.push(marker)

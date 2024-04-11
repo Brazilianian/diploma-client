@@ -26,10 +26,6 @@ export default {
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             </ul>
-            <form class="d-flex me-2" v-if="auth">
-              <input class="form-control me-2" type="search" placeholder="Пошук" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Пошук</button>
-            </form>
             <div class="d-flex">
               <button class="btn btn-outline-light me-2" type="button" v-if="!auth">
                 <router-link class="nav-link" to="/login">Авторизуватися</router-link>

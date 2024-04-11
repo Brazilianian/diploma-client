@@ -68,6 +68,12 @@ export default {
 
   mounted() {
     this.getUser()
+  },
+
+  computed: {
+    isAdmin() {
+      return this.$store.state.auth.isAdmin
+    }
   }
 }
 </script>
@@ -77,7 +83,8 @@ export default {
   <div class="container mt-5">
     <div class="row">
       <div class="col" v-if="user">
-        <h2>Профіль</h2>
+        <h2 class="text-center">Профіль</h2>
+        <h3 class="text-success text-center" v-if="isAdmin">Ви адміністратор!</h3>
         <div class="text-center">
           <img :src="user?.image?.content ? user.image.content : '/img/incognito.png'" alt="image" id="userImage" class="img-thumbnail" @click="initFileInput">
         </div>

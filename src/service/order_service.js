@@ -21,7 +21,7 @@ export async function createOrderForUnit(unitUuid, places, durationInfo, distanc
       dateTimeFrom: durationInfo.dateFrom,
       dateTimeTo: durationInfo.dateTo,
       distance: distanceInfo.distance,
-      duration: durationInfo.duration,
+      duration: distanceInfo.duration,
     },
     name: name,
     items: items,

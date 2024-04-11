@@ -265,6 +265,16 @@ export default {
 </script>
 
 <template>
+
+  <!-- Back Button -->
+  <div class="position-fixed ms-5">
+    <router-link :to="`/units/${this.unit?.uuid}`">
+      <button class="btn btn-secondary">
+        <img src="/img/go_back.svg" alt="go back">
+      </button>
+    </router-link>
+  </div>
+
   <div class="container">
     <div class="row text-center vh-100">
       <h1>Створення замолвення автомолбільного перевезення військової частини {{ this.unit?.name }}</h1>
@@ -403,7 +413,10 @@ export default {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-black">
-          <h3>Маршрут:</h3>
+          <h3><span class="text-secondary">Назва:</span> {{ name }}</h3>
+          <hr>
+
+          <h3 class="text-secondary">Маршрут:</h3>
           <div class="d-flex">
             <div
               v-for="(place, index) in this.places"
@@ -417,8 +430,42 @@ export default {
           </div>
 
           <div v-if="directionInfo?.duration && directionInfo?.distance">
-            <h3 class="fst-italic fw-bold">Час: {{ directionInfo?.duration && prettifyDuration }}</h3>
-            <h3 class="fst-italic fw-bold">Довжина: {{ directionInfo?.distance && prettifyDistance }}</h3>
+            <h3 class="fst-italic fw-bold"><span class="text-secondary">Час:</span>
+              {{ directionInfo?.duration && prettifyDuration }}</h3>
+            <h3 class="fst-italic fw-bold"><span class="text-secondary">Довжина:</span>
+              {{ directionInfo?.distance && prettifyDistance }}</h3>
+          </div>
+
+          <hr>
+
+          <div class="">
+            <h3 class="text-secondary">Груз, що буде перевозитись</h3>
+            <table class="table table-striped table-dark">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Назва</th>
+                <th scope="col">Дистанція</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                v-for="(item, index) in this.items"
+                :key="index"
+              >
+                <th>{{ ++index }}</th>
+                <th>{{ item.name }}</th>
+                <th>{{ item.description }}</th>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr>
+
+          <div class="">
+            <h3><span class="text-secondary">Дата відправлення: </span> {{ durationInfo.dateFrom }}</h3>
+            <h3><span class="text-secondary">Дата прибуття: </span> {{ durationInfo.dateTo }}</h3>
           </div>
 
           <hr>

@@ -168,8 +168,6 @@ export default {
         </div>
 
         <hr>
-
-        <input id="autocomplete" type="text" class="form-control" placeholder="Київ">
       </div>
       <div class="col-8">
         <div id="map" class="google-map"></div>
@@ -203,9 +201,8 @@ export default {
       </div>
     </div>
 
-    <div class="row text-center">
+    <div class="row text-center mt-3 mb-5">
       <div class="col-12">
-        <h3>Завершення замовлення</h3>
       </div>
       <div class="col-6">
         <h5>Дата відправки</h5>

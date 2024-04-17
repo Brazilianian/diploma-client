@@ -161,7 +161,7 @@ export default {
 
           <div class="input-group mb-3">
             <img class="input-group-text" id="basic-addon1" src="/img/marker.svg" alt="Маркер">
-            <input type="text" class="form-control" v-model="point.place[0].formatted_address"
+            <input type="text" class="form-control" v-model="point.places[0].formatted_address"
                    aria-describedby="basic-addon1" disabled>
           </div>
 

@@ -25,7 +25,7 @@ export default {
       this.$router.push('/auth/login')
     },
 
-    saveChanges() {
+    saveProfile() {
       updateUser(this.user)
         .then((res) => {
           this.$notify({
@@ -45,7 +45,14 @@ export default {
             })
 
             this.userValidation = err.response.data
+            return
           }
+
+          this.$notify({
+            type: 'error',
+            title: 'Оновлення профілю',
+            text: 'Непередбачувана помилка під час редагування профілю. ' + err
+          })
         })
     },
 
@@ -61,7 +68,9 @@ export default {
       fileReader.readAsDataURL(event.target.files[0])
       fileReader.onload = (event) => {
         unitImg.src = event.target.result
-        this.user.image.content = event.target.result
+        this.user.image = {
+          content: event.target.result
+        }
       }
     }
   },
@@ -79,7 +88,6 @@ export default {
 </script>
 
 <template>
-  <!-- TODO: complete profile page -->
   <div class="container mt-5">
     <div class="row">
       <div class="col" v-if="user">
@@ -107,7 +115,7 @@ export default {
         </div>
 
         <div class="mt-3 text-center">
-          <button type="button" class="btn btn-primary" @click="saveChanges">Зберегти налаштування</button>
+          <button type="button" class="btn btn-primary" @click="saveProfile">Зберегти налаштування</button>
         </div>
 
         <div class="text-end mt-3 mb-2">

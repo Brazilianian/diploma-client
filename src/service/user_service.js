@@ -22,8 +22,6 @@ export async function updateUser(user) {
   return axios.put(`/users`, {
     firstName: user.firstName,
     lastName: user.lastName,
-    image: {
-      content: user.image.content
-    }
+    image: user.image
   })
 }

@@ -41,7 +41,7 @@ export default {
         .catch(err => {
           this.$store.commit('auth/loginFailure')
 
-          if (err.response.status === 403) {
+          if (err.response?.status === 403) {
             this.userValidation.password = 'Невірний Пароль'
 
             return this.$notify({
@@ -54,7 +54,7 @@ export default {
           this.$notify({
             type: 'error',
             title: 'Авторизація',
-            text: `Помилка аутентифікації. ${err.response.data.message}`
+            text: `Помилка аутентифікації. ${err}`
           })
         })
     }
